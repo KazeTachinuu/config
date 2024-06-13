@@ -8,31 +8,24 @@ NC='\033[0m' # No Color
 
 packagesNeeded="vim zsh git curl"
 
-check_root() {
-    if [ "$(id -u)" -ne 0 ]; then
-        echo -e "${RED}This script must be run as root.${NC}" >&2
-        exit 1
-    fi
-}
-
 install_packages() {
     package_manager=$1
     echo -e "${YELLOW}Installing packages using $package_manager...${NC}"
     case $package_manager in
         apk)
-            apk add --no-cache $packagesNeeded
+            sudo apk add --no-cache $packagesNeeded
             ;;
         apt-get)
-            apt-get update && apt-get install -y $packagesNeeded
+            sudo apt-get update && sudo apt-get install -y $packagesNeeded
             ;;
         dnf)
-            dnf install -y $packagesNeeded
+            sudo dnf install -y $packagesNeeded
             ;;
         zypper)
-            zypper install -y $packagesNeeded
+            sudo zypper install -y $packagesNeeded
             ;;
         pacman)
-            pacman -Syu --noconfirm $packagesNeeded
+            sudo pacman -Syu --noconfirm $packagesNeeded
             ;;
         *)
             echo -e "${RED}FAILED TO INSTALL PACKAGES: Unsupported package manager.${NC}" >&2
@@ -116,7 +109,10 @@ install_zsh_plugins() {
 }
 
 main() {
-    check_root
+    if [ "$(id -u)" -ne 0 ]; then
+        echo -e "${RED}This script must be run as root for package installation.${NC}" >&2
+        exit 1
+    fi
 
     if [ -x "$(command -v apk)" ]; then
         install_packages apk || exit 1
@@ -133,6 +129,10 @@ main() {
         exit 1
     fi
 
+    echo -e "${GREEN}Package installation completed. Please run the script as a normal user for further setup.${NC}"
+}
+
+post_install() {
     change_default_shell zsh || true
     install_vundle || true
     update_vimrc || true
@@ -140,10 +140,12 @@ main() {
     update_zshrc || true
     install_zsh_plugins || true
 
-
     echo -e "${GREEN}All tasks completed successfully.${NC}"
-
     env zsh
 }
 
-main
+if [ "$(id -u)" -eq 0 ]; then
+    main
+else
+    post_install
+fi
