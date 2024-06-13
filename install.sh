@@ -1,45 +1,35 @@
 #!/bin/sh
 
-# Define colors
+# Define colors for colorful output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+# List of packages to be installed
 packagesNeeded="vim zsh git curl"
 
+# Function to install packages based on package manager
 install_packages() {
     package_manager=$1
     echo -e "${YELLOW}Installing packages using $package_manager...${NC}"
     case $package_manager in
-        apk)
-            sudo apk add --no-cache $packagesNeeded
-            ;;
-        apt-get)
-            sudo apt-get update && sudo apt-get install -y $packagesNeeded
-            ;;
-        dnf)
-            sudo dnf install -y $packagesNeeded
-            ;;
-        zypper)
-            sudo zypper install -y $packagesNeeded
-            ;;
-        pacman)
-            sudo pacman -Syu --noconfirm $packagesNeeded
-            ;;
-        *)
-            echo -e "${RED}FAILED TO INSTALL PACKAGES: Unsupported package manager.${NC}" >&2
-            return 1
-            ;;
+        apk) sudo apk add --no-cache $packagesNeeded ;;
+        apt-get) sudo apt-get update && sudo apt-get install -y $packagesNeeded ;;
+        dnf) sudo dnf install -y $packagesNeeded ;;
+        zypper) sudo zypper install -y $packagesNeeded ;;
+        pacman) sudo pacman -Syu --noconfirm $packagesNeeded ;;
+        *) echo -e "${RED}FAILED TO INSTALL PACKAGES: Unsupported package manager.${NC}" >&2; return 1 ;;
     esac
     echo -e "${GREEN}Packages installed successfully.${NC}"
 }
 
+# Function to change the default shell
 change_default_shell() {
     shell=$1
     if command -v $shell >/dev/null 2>&1; then
         echo -e "${YELLOW}Changing default shell to $shell...${NC}"
-        chsh -s "$(which $shell)"
+        chsh -s "$(command -v $shell)"
         echo -e "${GREEN}Default shell changed to $shell.${NC}"
     else
         echo -e "${RED}Shell $shell not found.${NC}" >&2
@@ -47,106 +37,57 @@ change_default_shell() {
     fi
 }
 
-install_vundle() {
-    echo -e "${YELLOW}Installing Vundle Vim Plugin Manager...${NC}"
-    if git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim; then
-        echo -e "${GREEN}Vundle installed successfully.${NC}"
+# Function to clone repositories or download files
+fetch_and_install() {
+    url=$1
+    target=$2
+    echo -e "${YELLOW}Fetching $url and installing to $target...${NC}"
+    if git clone --quiet $url $target; then
+        echo -e "${GREEN}Installation to $target completed.${NC}"
     else
-        echo -e "${RED}Failed to install Vundle.${NC}" >&2
+        echo -e "${RED}Failed to fetch $url.${NC}" >&2
         return 1
     fi
 }
 
-update_vimrc() {
-    echo -e "${YELLOW}Updating vimrc...${NC}"
-    mkdir -p "$HOME/.vimundo"
-    if curl -fsSL https://raw.githubusercontent.com/KazeTachinuu/config/master/.vimrc -o "$HOME/.vimrc"; then
-        echo -e "${GREEN}vimrc updated successfully.${NC}"
-    else
-        echo -e "${RED}Failed to update vimrc.${NC}" >&2
-        return 1
-    fi
-}
-
-install_oh_my_zsh() {
-    echo -e "${YELLOW}Installing Oh-My-Zsh...${NC}"
-    if sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sed '/\s*exec\s\s*zsh\s*-l\s*/d')" --unattended --skip-chsh; then
-        echo -e "${GREEN}Oh-My-Zsh installed successfully.${NC}"
-    else
-        echo -e "${RED}Failed to install Oh-My-Zsh.${NC}" >&2
-        return 1
-    fi
-}
-
-update_zshrc() {
-    echo -e "${YELLOW}Updating zshrc...${NC}"
-    if curl -fsSL https://raw.githubusercontent.com/KazeTachinuu/config/master/.zshrc -o "$HOME/.zshrc"; then
-        echo -e "${GREEN}zshrc updated successfully.${NC}"
-    else
-        echo -e "${RED}Failed to update zshrc.${NC}" >&2
-        return 1
-    fi
-}
-
-install_useful_aliases() {
-    echo -e "${YELLOW}Installing Aliases...${NC}"
-    if curl -fsSL https://raw.githubusercontent.com/KazeTachinuu/config/master/.my_aliases.txt -o "$HOME/.my_aliases.txt"; then
-        echo "source $HOME/.my_aliases.txt" >> "${ZDOTDIR:-$HOME}/.zshrc"
-        
-        echo -e "${GREEN}Aliases installed successfully.${NC}"
-    else
-        echo -e "${RED}Failed to install useful aliases.${NC}" >&2
-        return 1
-    fi
-}
-
-install_zsh_plugins() {
-    ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
-    echo -e "${YELLOW}Installing zsh-autosuggestions...${NC}"
-    if git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"; then
-        echo -e "${GREEN}zsh-autosuggestions installed successfully.${NC}"
-    else
-        echo -e "${RED}Failed to install zsh-autosuggestions.${NC}" >&2
-        return 1
-    fi
-
-    echo -e "${YELLOW}Installing zsh-syntax-highlighting...${NC}"
-    if git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.local/share/zsh/plugins/zsh-syntax-highlighting"; then
-        echo "source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> "${ZDOTDIR:-$HOME}/.zshrc"
-        echo -e "${GREEN}zsh-syntax-highlighting installed successfully.${NC}"
-    else
-        echo -e "${RED}Failed to install zsh-syntax-highlighting.${NC}" >&2
-        return 1
-    fi
-}
-
+# Main installation function
 main() {
-    if [ -x "$(command -v apk)" ]; then
-        install_packages apk || exit 1
-    elif [ -x "$(command -v apt-get)" ]; then
-        install_packages apt-get || exit 1
-    elif [ -x "$(command -v dnf)" ]; then
-        install_packages dnf || exit 1
-    elif [ -x "$(command -v zypper)" ]; then
-        install_packages zypper || exit 1
-    elif [ -x "$(command -v pacman)" ]; then
-        install_packages pacman || exit 1
-    else
-        echo -e "${RED}FAILED TO INSTALL PACKAGES: Package manager not found. You must manually install: $packagesNeeded${NC}" >&2
-        exit 1
-    fi
+    # Check which package manager is available and install necessary packages
+    for manager in apk apt-get dnf zypper pacman; do
+        if command -v $manager >/dev/null 2>&1; then
+            install_packages $manager || exit 1
+            break
+        fi
+    done
 
+    # Change default shell to zsh
     change_default_shell zsh || true
-    install_vundle || true
-    update_vimrc || true
-    install_oh_my_zsh || true
-    update_zshrc || true
-    install_zsh_plugins || true
-    install_useful_aliases || true
 
+    # Install Vundle Vim Plugin Manager
+    fetch_and_install https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim || true
 
+    # Download and update .vimrc
+    curl -fsSL https://raw.githubusercontent.com/KazeTachinuu/config/master/.vimrc -o $HOME/.vimrc
+    echo -e "${YELLOW}vimrc updated.${NC}"
+
+    # Install Oh-My-Zsh
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sed '/\s*exec\s\s*zsh\s*-l\s*/d')" --unattended --skip-chsh || true
+
+    # Download and update .zshrc
+    curl -fsSL https://raw.githubusercontent.com/KazeTachinuu/config/master/.zshrc -o $HOME/.zshrc
+    echo -e "${YELLOW}zshrc updated.${NC}"
+
+    # Install zsh plugins (zsh-autosuggestions and zsh-syntax-highlighting)
+    fetch_and_install https://github.com/zsh-users/zsh-autosuggestions.git $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions || true
+    fetch_and_install https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting || true
+
+    # Install useful aliases
+    fetch_and_install https://raw.githubusercontent.com/KazeTachinuu/config/master/.my_aliases.txt $HOME/.my_aliases.txt || true
+
+    # Notify completion
     echo -e "${GREEN}All tasks completed successfully.${NC}"
-    env zsh
+    env zsh  # Start zsh shell
 }
 
+# Execute main function
 main
