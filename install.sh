@@ -99,8 +99,8 @@ install_zsh_plugins() {
     fi
 
     echo -e "${YELLOW}Installing zsh-syntax-highlighting...${NC}"
-    if git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"; then
-        echo "source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> "${ZDOTDIR:-$HOME}/.zshrc"
+    if git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.local/share/zsh/plugins/zsh-syntax-highlighting"; then
+        echo "source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> "${ZDOTDIR:-$HOME}/.zshrc"
         echo -e "${GREEN}zsh-syntax-highlighting installed successfully.${NC}"
     else
         echo -e "${RED}Failed to install zsh-syntax-highlighting.${NC}" >&2
@@ -109,11 +109,6 @@ install_zsh_plugins() {
 }
 
 main() {
-    if [ "$(id -u)" -ne 0 ]; then
-        echo -e "${RED}This script must be run as root for package installation.${NC}" >&2
-        exit 1
-    fi
-
     if [ -x "$(command -v apk)" ]; then
         install_packages apk || exit 1
     elif [ -x "$(command -v apt-get)" ]; then
@@ -129,10 +124,6 @@ main() {
         exit 1
     fi
 
-    echo -e "${GREEN}Package installation completed. Please run the script as a normal user for further setup.${NC}"
-}
-
-post_install() {
     change_default_shell zsh || true
     install_vundle || true
     update_vimrc || true
@@ -144,8 +135,4 @@ post_install() {
     env zsh
 }
 
-if [ "$(id -u)" -eq 0 ]; then
-    main
-else
-    post_install
-fi
+main
