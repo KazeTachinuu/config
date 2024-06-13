@@ -88,6 +88,18 @@ update_zshrc() {
     fi
 }
 
+install_useful_aliases() {
+    echo -e "${YELLOW}Installing Aliases...${NC}"
+    if curl -fsSL https://raw.githubusercontent.com/KazeTachinuu/config/master/.my_aliases.txt -o "$HOME/.my_aliases.txt"; then
+        echo "source $HOME/.my_aliases.txt" >> "${ZDOTDIR:-$HOME}/.zshrc"
+        
+        echo -e "${GREEN}Aliases installed successfully.${NC}"
+    else
+        echo -e "${RED}Failed to install useful aliases.${NC}" >&2
+        return 1
+    fi
+}
+
 install_zsh_plugins() {
     ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
     echo -e "${YELLOW}Installing zsh-autosuggestions...${NC}"
@@ -130,6 +142,8 @@ main() {
     install_oh_my_zsh || true
     update_zshrc || true
     install_zsh_plugins || true
+    install_useful_aliases || true
+
 
     echo -e "${GREEN}All tasks completed successfully.${NC}"
     env zsh
