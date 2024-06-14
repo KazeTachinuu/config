@@ -25,6 +25,17 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTIGNORE="ls:cd:exit"
 
+plugins=(
+    zsh-autosuggestions
+    git
+    history
+    sudo
+    web-search
+    copyfile
+    copybuffer
+    dirhistory
+)
+
 # Editor
 export EDITOR='vim'
 
