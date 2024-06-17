@@ -2,7 +2,9 @@
 setopt extended_glob hist_ignore_all_dups prompt_subst
 
 # Path settings
-export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin
+export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin:$HOME/.local/bin
+
+export SNOWPACK_DIR=$HOME/dev/snowpack-network-cpp
 
 # Aliases
 alias ll='ls -alF'
