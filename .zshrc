@@ -4,7 +4,6 @@ setopt extended_glob hist_ignore_all_dups prompt_subst
 # Path settings
 export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin:$HOME/.local/bin
 
-export SNOWPACK_DIR=$HOME/dev/snowpack-network-cpp
 
 # Aliases
 alias ll='ls -alF'
@@ -50,7 +49,11 @@ export EDITOR='vim'
 # Load custom aliases if available
 [[ -f "$HOME/.my_aliases.txt" ]] && source "$HOME/.my_aliases.txt"
 
+# Load ZSH profile if available
+[[ -f "$HOME/.zsh_profile" ]] && source "$HOME/.zsh_profile"
+
 # Custom functions
 # function example_function() {
 #     echo "This is an example function."
 # }
+
