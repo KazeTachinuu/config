@@ -78,6 +78,12 @@ main() {
         echo -e "${GREEN}Aliases installed successfully.${NC}"
     fi
 
+    # Create Vim plugin directory and clone vim-commentary plugin
+    echo -e "${YELLOW}Installing vim-commentary plugin...${NC}"
+    mkdir -p "$HOME/.vim/pack/tpope/start/commentary"
+    fetch_and_install "https://tpope.io/vim/commentary.git" "$HOME/.vim/pack/tpope/start/commentary"
+    echo -e "${GREEN}vim-commentary plugin installed successfully.${NC}"
+
     # Notify completion
     echo -e "${GREEN}All tasks completed successfully.${NC}"
     env zsh  # Start zsh shell
@@ -85,3 +91,4 @@ main() {
 
 # Execute main function
 main
+
