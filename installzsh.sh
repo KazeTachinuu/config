@@ -7,7 +7,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # List of packages to be installed
-PACKAGES="zsh"
+packagesNeeded="zsh"
 
 # Function to install packages based on package manager
 install_packages() {
