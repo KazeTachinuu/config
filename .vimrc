@@ -59,7 +59,7 @@ nnoremap <C-s> :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 " Vim Appearance
 colorscheme sonokai     " Set colorscheme
 set termguicolors       " Enable true colors support
-autocmd vimenter * hi Normal guibg=NONE ctermbg=NONE  " Set background to transparent
+" autocmd vimenter * hi Normal guibg=NONE ctermbg=NONE  " Set background to transparent
 
 " Use filetype-based settings
 syntax enable           " Enable syntax highlighting
