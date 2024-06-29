@@ -15,7 +15,7 @@ install_packages() {
     echo -e "${YELLOW}Installing packages using $package_manager...${NC}"
     case $package_manager in
         apk) sudo apk add --no-cache $packagesNeeded ;;
-        apt-get) sudo apt-get update && sudo apt-get install -y $packagesNeeded ;;
+        apt-get) sudo apt-get install -y $packagesNeeded ;;
         dnf) sudo dnf install -y $packagesNeeded ;;
         zypper) sudo zypper install -y $packagesNeeded ;;
         pacman) sudo pacman -Sy --noconfirm $packagesNeeded ;;
