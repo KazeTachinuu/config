@@ -7,7 +7,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # List of packages to be installed
-packagesNeeded="vim zsh"
+packagesNeeded="vim zsh git"
 
 install_packages() {
     package_manager=$1

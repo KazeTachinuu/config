@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 
 # List of packages to be installed
-packagesNeeded="vim"
+packagesNeeded="vim git"
 
 # Function to install packages based on package manager
 install_packages() {
