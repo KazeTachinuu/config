@@ -12,6 +12,8 @@ alias checkip='curl http://api.ipify.org/'
 
 # Git Aliases
 alias gca='git commit -a -m'
+alias gpt='git push --follow-tags'
+alias gt='git tag -ma'
 alias gpl='git pull'
 alias gcl='git clean -f -d -x'
 alias gl='git log'
