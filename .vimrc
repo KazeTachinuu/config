@@ -13,9 +13,9 @@ Plugin 'garbas/vim-snipmate'       " Snippet management (deprecated, consider us
 Plugin 'tomtom/tlib_vim'           " Required for some plugins
 Plugin 'MarcWeber/vim-addon-mw-utils' " More utilities for Vim
 Plugin 'sainnhe/sonokai'           " Beautiful colorscheme
-
+Plugin 'rhysd/vim-clang-format'    " Auto-Format buffer on save
 " Conditionally load coc.nvim
-let g:use_coc = 0 " Set to 1 to enable coc.nvim
+let g:use_coc = 1 " Set to 1 to enable coc.nvim
 
 if g:use_coc
     Plugin 'neoclide/coc.nvim' " Intellisense engine
@@ -102,6 +102,8 @@ nnoremap <SPACE> <Nop>
 let mapleader=" "
 set ph=10               " Max height of windows appearing
 
+let g:clang_format#auto_format=1
+
 if g:use_coc
     " CoC.nvim configuration
     " Autocomplete and diagnostics settings
@@ -132,11 +134,6 @@ if g:use_coc
     " Symbol renaming.
     nmap <leader>rn <Plug>(coc-rename)
 
-    " Formatting selected code.
-    xmap <leader>f  <Plug>(coc-format-selected)
-    nmap <leader>f  <Plug>(coc-format-selected)
-    nnoremap <silent> <C-f> :call CocAction('format')<CR>
-
     " Update signature help on jump placeholder.
     autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 
@@ -154,3 +151,4 @@ if g:use_coc
     nmap <silent> [g <Plug>(coc-diagnostic-prev)
     nmap <silent> ]g <Plug>(coc-diagnostic-next)
 endif
+
