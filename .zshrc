@@ -35,7 +35,7 @@ precmd() { vcs_info }                        # Update git info before each promp
 
 # Set up the prompt (PS1)
 # Format: username🍎hostname-[current_directory](git_branch)
-PROMPT=$'%F{blue}┌──(%F{cyan}%B%n%F{magenta}🍎%F{cyan}%m%b%F{blue})-[%F{yellow}%B%(8~|%-4~/.../%3~|%~)%b%F{blue}]%f${vcs_info_msg_0_}\n└─%F{cyan}%B$%b%F{blue}%f '
+PROMPT=$'%F{blue}┌──(%F{cyan}%B%n%F{magenta}🍎%F{cyan}%m%b%F{blue})-[%F{yellow}%B%(8~|%-4~/.../%3~|%~)%b%F{blue}]%f${vcs_info_msg_0_}\n%F{blue}└─%F{cyan}%B$%b%F{blue}%f '
 
 # Set up right prompt (RPROMPT)
 # Shows error code and background jobs if any
