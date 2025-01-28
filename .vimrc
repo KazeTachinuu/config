@@ -51,7 +51,12 @@ nnoremap <C-n> :NERDTreeToggle<CR>
 nnoremap <C-s> :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 
 " Vim Appearance
-colorscheme sonokai     " Set colorscheme
+try
+  colorscheme sonokai     " Set colorscheme
+catch /^Vim\%((\a\+)\)\=:E185/
+  colorscheme default     " Fallback to default if sonokai not installed
+endtry
+
 set termguicolors       " Enable true colors support
 " autocmd vimenter * hi Normal guibg=NONE ctermbg=NONE  " Set background to transparent
 

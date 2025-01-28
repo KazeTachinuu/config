@@ -95,6 +95,12 @@ download_configs() {
     
     # Always update .zshrc
     print_color "info" "Updating .zshrc..."
+    # Backup existing .zshrc if it exists
+    if [ -f "$HOME/.zshrc" ]; then
+        print_color "warning" "Backing up existing .zshrc..."
+        cp "$HOME/.zshrc" "$HOME/.zshrc.backup"
+    fi
+    
     curl -fsSL "https://raw.githubusercontent.com/KazeTachinuu/config/master/.zshrc" -o "$HOME/.zshrc"
     
     # Only download .zsh_profile if it doesn't exist
