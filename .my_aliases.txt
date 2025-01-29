@@ -3,6 +3,7 @@ alias config='cd $HOME/.config/'
 alias zshalias='$EDITOR $HOME/.my_aliases.txt'
 alias vimrc='$EDITOR ~/.vimrc'
 alias zshrc='$EDITOR $HOME/.zshrc'
+alias reload='source ~/.my_aliases.txt'
 
 
 # Check Current IP Address
@@ -17,4 +18,4 @@ alias gcl='git clean -f -d -x'
 alias gl='git log'
 alias gs='git status'
 alias gp='git push'
-alias reload='source ~/.my_aliases.txt'
+
