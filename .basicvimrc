@@ -1,0 +1,12 @@
+set backspace=indent,eol,start " Backspace key remove the 4 spaces of an indent at once
+syntax on " For syntaxic coloration
+set nu " set number
+
+set expandtab " Transform a tabulation into spaces
+set shiftwidth=4 " Make a tabulation 4 spaces
+
+set smarttab " Make smart tabs
+set smartindent " Automatically create indentation indent
+
+set mouse=a " Use mouse
+set clipboard=unnamedplus " Use the same clipboard everywhere
