@@ -1,4 +1,4 @@
-# Sytem Shortcuts
+# System Shortcuts
 alias config='cd $HOME/.config/'
 alias zshalias='$EDITOR $HOME/.my_aliases.txt'
 alias vimrc='$EDITOR ~/.vimrc'
