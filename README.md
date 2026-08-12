@@ -1,15 +1,8 @@
 # config
 
-Personal configuration files.
+Split into two repositories:
 
-- **`pie/`**: EPITA PIE starter kit: vim (clangd LSP), bash, gdb, tmux and
-  readline configs, auto-installed at every PIE login, plus a docker
-  harness and bats suite for testing. See [pie/README.md](pie/README.md).
-- **`clang-format`**: the EPITA style the moulinette grades against.
-- **`starship.toml`**: prompt config. Plain text labels, ANSI colors, no
-  Nerd Font. Install and enable:
+- [dotfiles](https://github.com/KazeTachinuu/dotfiles): zshrc, aliases, starship, nvim
+- [epita-ing1-setup](https://github.com/KazeTachinuu/epita-ing1-setup): the EPITA PIE starter kit
 
-  ```sh
-  install -Dm644 starship.toml ~/.config/starship.toml
-  eval "$(starship init bash)"   # or zsh / fish, in your shell rc
-  ```
+This repo is archived; the history stays readable here.
